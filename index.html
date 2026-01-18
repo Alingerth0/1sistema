@@ -312,6 +312,64 @@
             animation: fadeIn 0.5s ease;
         }
 
+        .key-display {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .key-value {
+            background: var(--bg);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            color: var(--secondary);
+            word-break: break-all;
+            margin-top: 10px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .key-text {
+            flex: 1;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+        }
+
+        .copy-success {
+            color: var(--secondary);
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .copy-success.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
         footer {
             margin-top: 60px;
             text-align: center;
@@ -335,6 +393,15 @@
 
             .auth-form {
                 flex-direction: column;
+            }
+
+            .key-value {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .copy-btn {
+                width: 100%;
             }
         }
 
@@ -520,15 +587,27 @@
 
             <div id="protectedContent" class="protected-link">
                 <div class="grid">
-                    <a id="secureLink" href="#" target="_blank" rel="noopener noreferrer" class="download-card">
+                    <a href="https://download1640.mediafire.com/bfs51208pxhg50lby1oZw5XG2dVtIBeK5Rj19m3KmFFY6BdXOZUXjqyUdlw1lL77R17Nw1tKeCCvML-pTZnkLhm063vBy1iqyNeE5PmJfTbsOK_eI3VBciV-2t9iQFF_JqYUCPHeH7FDeOB-fSIPYctOVd5xsE6YxI09zZEuktgAZBc/9quuwveqnk6x49i/1SISTEMA.exe" target="_blank" rel="noopener noreferrer" class="download-card">
                         <div class="card-content">
                             <div class="card-icon">📦</div>
                             <div class="card-text">
                                 <div class="card-label">离线更新包</div>
-                                <div class="card-title">Paquete Actualización Offline</div>
+                                <div class="card-title">Paquete Offline</div>
                             </div>
                         </div>
                     </a>
+                </div>
+                
+                <div class="key-display">
+                    <div class="card-label" style="margin-bottom: 8px;">🔑 CÓDIGO DE ACCESO</div>
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
+                        Información adicional requerida:
+                    </p>
+                    <div class="key-value">
+                        <span class="key-text" id="keyText"></span>
+                        <button class="copy-btn" onclick="copyKey()">📋 Copiar</button>
+                    </div>
+                    <div id="copySuccess" class="copy-success">✅ Código copiado</div>
                 </div>
             </div>
         </div>
@@ -539,15 +618,11 @@
     </div>
 
     <script>
-        // IMPORTANTE: Este es un ejemplo básico. Para producción, 
-        // implementa autenticación real con backend.
+        // Hash SHA-256 de la contraseña: aLk4L1n0K#ma$2001
+        const STORED_HASH = 'debe0496446f97804b31e85f1d8a4e47d0a3db0a99fe2820e5eb88374ee986b5';
         
-        // Hash SHA-256 de la contraseña (generado en el servidor)
-        // Este hash corresponde a una contraseña de ejemplo
-        const STORED_HASH = '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92';
-        
-        // URL encriptada (base64) - deberías generar esto dinámicamente
-        const ENCRYPTED_URL = 'aHR0cHM6Ly9leGFtcGxlLmNvbS9kb3dubG9hZC56aXA='; // Ejemplo placeholder
+        // Clave encriptada en base64
+        const ENCRYPTED_KEY = 'U29aNFc5TFVrMUF4a3B6aU9CbzFiQT09';
         
         async function sha256(message) {
             const msgBuffer = new TextEncoder().encode(message);
@@ -567,9 +642,9 @@
             const inputHash = await sha256(input.value);
             
             if (inputHash === STORED_HASH) {
-                // Desencriptar URL
-                const decodedUrl = atob(ENCRYPTED_URL);
-                document.getElementById('secureLink').href = decodedUrl;
+                // Desencriptar clave
+                const decryptedKey = atob(ENCRYPTED_KEY);
+                document.getElementById('keyText').textContent = decryptedKey;
                 
                 // Mostrar contenido protegido
                 authContainer.style.display = 'none';
@@ -586,11 +661,25 @@
             }
         }
         
+        function copyKey() {
+            const keyText = document.getElementById('keyText').textContent;
+            const copySuccess = document.getElementById('copySuccess');
+            
+            navigator.clipboard.writeText(keyText).then(() => {
+                copySuccess.classList.add('show');
+                setTimeout(() => {
+                    copySuccess.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                alert('No se pudo copiar. Por favor, copia manualmente: ' + keyText);
+            });
+        }
+        
         // Verificar si ya está autenticado en esta sesión
         window.addEventListener('DOMContentLoaded', () => {
             if (sessionStorage.getItem('authenticated') === 'true') {
-                const decodedUrl = atob(ENCRYPTED_URL);
-                document.getElementById('secureLink').href = decodedUrl;
+                const decryptedKey = atob(ENCRYPTED_KEY);
+                document.getElementById('keyText').textContent = decryptedKey;
                 document.getElementById('authContainer').style.display = 'none';
                 document.getElementById('protectedContent').classList.add('show');
             }
