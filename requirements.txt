@@ -1,0 +1,6 @@
+flask==3.0.0
+requests==2.31.0
+watchdog==3.0.0
+psutil==5.9.6
+pywin32==306
+pyserial==3.5

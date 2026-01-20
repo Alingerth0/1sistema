@@ -1,0 +1,24 @@
+REPORTE DE LOGS DE ERRORES (MySQL/MariaDB)
+--------------------------------------------
+Fuente: D:\ESTO\1SS\server\MariaDB\data\DESKTOP-7U505KL.err
+Última verificación: (Fecha actual)
+
+ESTADO GENERAL:
+- El servicio de base de datos se inicia y detiene correctamente ("Normal shutdown", "ready for connections").
+- Puerto activo: 3306.
+
+ERRORES ENCONTRADOS:
+1. Advertencias de Replicación (No Crítico para uso local):
+   "[Warning] InnoDB: Cannot open table mysql/gtid_slave_pos..."
+   "[Warning] Failed to load slave replication state..."
+   -> Esto indica que la configuración busca tablas de replicación (maestro-esclavo) que no existen. Si el sistema es standalone (punto de venta único), esto se puede ignorar.
+
+2. No hay errores de "Crash":
+   No se observan cierres inesperados del motor InnoDB.
+
+3. Logs de PHP:
+   No se encontraron archivos de log de errores de PHP en las rutas estándar (Runtime/Logs o data/log).
+   -> RECOMENDACIÓN: Si persisten errores de aplicación "invisibles", se debe habilitar 'display_errors' o configurar el 'error_log' en el php.ini o index.php (actualmente está comentado en index.php).
+
+CONCLUSIÓN:
+La base de datos parece saludable a nivel de servicio. Los problemas de "Cierres Z/X" probablemente no se deban a una caída del motor DB, sino a datos inconsistentes en las tablas o fallos en la lógica de la aplicación/impresora.

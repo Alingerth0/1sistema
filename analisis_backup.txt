@@ -1,0 +1,36 @@
+ANÁLISIS DE ARCHIVO: backup.py
+----------------------------------
+Ubicación: D:\ESTO\backup.py
+Lenguaje: Python 3
+
+DESCRIPCIÓN FUNCIONAL:
+Este script es una herramienta de automatización para realizar copias de seguridad (Backups) completas del directorio actual del proyecto.
+
+CARACTERÍSTICAS PRINCIPALES:
+1. Origen y Destino:
+   - Origen: Toma el directorio actual donde se ejecuta (D:\ESTO).
+   - Destino: C:\Users\Alt\Documents\Backups.
+
+2. Formato:
+   - Crea archivos comprimidos .zip.
+   - Nomenclatura: backup_AAAA-MM-DD_HH-MM-SS.zip (Time-stamped).
+
+3. Filtros (Ignora):
+   - Carpetas de control de versiones (.git).
+   - Carpetas temporales (.gemini, __pycache__).
+   - Carpetas del sistema ($RECYCLE.BIN).
+   - El propio script (backup.py).
+
+4. Logging:
+   - Genera un archivo de registro en C:\Users\Alt\Documents\Backups\log.txt.
+   - Registra fecha, hora y estado de cada operación.
+
+5. Manejo de Errores:
+   - Intenta continuar si falla un archivo específico, reportando advertencias.
+   - Elimina el ZIP corrupto si ocurre un error crítico.
+
+CONCLUSIÓN DE SEGURIDAD:
+El script es seguro y benigno. No modifica ni borra archivos del proyecto original (solo lee). Su única acción de escritura es en la carpeta de documentos del usuario (Destino).
+
+RECOMENDACIÓN:
+Puede ejecutarse periódicamente para asegurar el código antes de realizar cambios mayores.

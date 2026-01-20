@@ -1,0 +1,10 @@
+--- REPORTE DE DIAGNÓSTICO DE BASE DE DATOS ---
+
+Intentando conectar a 127.0.0.1:3307 BD: pose...
+Fallo en puerto 3307: 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3307' (10061)
+Intentando conectar a 127.0.0.1:3306 BD: pose...
+Fallo en puerto 3306: 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (10061)
+Intentando conectar a 127.0.0.1:3308 BD: pose...
+Fallo en puerto 3308: 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3308' (10061)
+
+FATAL: No se pudo conectar a la base de datos en ningún puerto probado.
